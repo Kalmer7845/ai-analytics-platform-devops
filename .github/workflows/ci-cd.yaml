@@ -1,0 +1,21 @@
+name: ci-cd
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: docker build -t api .
+    - run: go test ./...
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - run: trivy image api
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "GitOps deploy triggered"
